@@ -20,7 +20,8 @@ var EasyAjax = function () {
 				var xhr = new XMLHttpRequest();
 				xhr.open('GET', _this.baseUrl + query, true);
 				xhr.addEventListener('load', function (ev) {
-					resolve(ev.target);
+					var response = JSON.parse(ev.target.response);
+					resolve(response);
 				});
 				xhr.addEventListener('error', function (ev) {
 					var error = new Error();

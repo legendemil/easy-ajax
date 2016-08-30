@@ -8,7 +8,8 @@ class EasyAjax {
 			let xhr = new XMLHttpRequest();
 			xhr.open('GET', this.baseUrl + query, true);
 			xhr.addEventListener('load', function(ev) {
-				resolve(ev.target);
+				let response = JSON.parse(ev.target.response);
+				resolve(response);
 			});
 			xhr.addEventListener('error', function (ev) {
 				let error = new Error();
