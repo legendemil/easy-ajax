@@ -27,7 +27,7 @@ describe('Testing EasyAjax.', function() {
 
 	});
 
-	describe("GET method",function(){
+	describe("GET method", function(){
 
 		beforeEach(function() {
 			this.ajax = new EasyAjax(baseUrl);
@@ -36,13 +36,11 @@ describe('Testing EasyAjax.', function() {
 		it("Called with correct params should return XMLHttpRequest Object", function(done) {
 			let result = this.ajax.get('api/learncode/friends');
 			result.then(function(data) {
-				console.log('success', data);
 				let isCorrect = data instanceof XMLHttpRequest;
 				expect(isCorrect).toBe(true);
 				done();
 			})
 			.catch(function(error) {
-				console.log('error', error);
 				done();
 			});
 		});
