@@ -19,17 +19,14 @@ var EasyAjax = function () {
 				var _this = this;
 
 				return new Promise(function (resolve, reject) {
-					var xhr = new XMLHttpRequest();
+					var xhr = _this.xhr;
 					xhr.open('GET', _this.baseUrl + query, true);
 					xhr.addEventListener('load', function (ev) {
-						var response = JSON.parse(ev.target.response);
+						var response = parseResponse(ev.target.response);
 						resolve(response);
 					});
 					xhr.addEventListener('error', function (ev) {
-						var error = new Error();
-						error.name = 'UrlError';
-						error.message = 'Incorrect URL';
-						error.data = ev.target;
+						var error = makeError(ev.target);
 						reject(error);
 					});
 					xhr.send();
@@ -44,14 +41,30 @@ var EasyAjax = function () {
 					var xhr = _this2.xhr;
 					xhr.open('POST', _this2.baseUrl + query, true);
 					xhr.addEventListener('load', function (ev) {
-						var response = JSON.parse(ev.target.response);
+						var response = parseResponse(ev.target.response);
 						resolve(response);
 					});
 					xhr.addEventListener('error', function (ev) {
-						var error = new Error();
-						error.name = 'UrlError';
-						error.message = 'Incorrect URL';
-						error.data = ev.target;
+						var error = makeError(ev.target);
+						reject(error);
+					});
+					xhr.send(data);
+				});
+			}
+		}, {
+			key: 'put',
+			value: function put(query, data) {
+				var _this3 = this;
+
+				return new Promise(function (resolve, reject) {
+					var xhr = _this3.xhr;
+					xhr.open('PUT', _this3.baseUrl + query, true);
+					xhr.addEventListener('load', function (ev) {
+						var response = parseResponse(ev.target.response);
+						resolve(response);
+					});
+					xhr.addEventListener('error', function (ev) {
+						var error = makeError(ev.target);
 						reject(error);
 					});
 					xhr.send(data);
@@ -66,6 +79,25 @@ var EasyAjax = function () {
 
 		return EasyAjax;
 	}();
+
+	function parseResponse(response) {
+		var result = undefined;
+		try {
+			result = JSON.parse(response);
+		} catch (e) {
+			result = response;
+			console.log('Error: ', e, result);
+		}
+		return result;
+	}
+
+	function makeError(data) {
+		var error = new Error();
+		error.name = 'UrlError';
+		error.message = 'Incorrect URL';
+		error.data = data;
+		return error;
+	}
 
 	return EasyAjax;
 }();
