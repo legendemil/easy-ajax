@@ -2,7 +2,6 @@ let EasyAjax = (function() {
 	class EasyAjax {
 		constructor(baseUrl) {
 			this.baseUrl = baseUrl;
-			this.xhr = new XMLHttpRequest();
 		}
 
 		get(query) {
@@ -28,7 +27,7 @@ let EasyAjax = (function() {
 
 	function makeRequest(type, query = '', data = null) {
 		return new Promise((resolve, reject) => {
-			let xhr = this.xhr;
+			let xhr = new XMLHttpRequest();
 			xhr.open(type, this.baseUrl + query, true);
 			xhr.addEventListener('load', function(ev) {
 				let response = parseResponse(ev.target.response);
@@ -39,8 +38,10 @@ let EasyAjax = (function() {
 				reject(error);
 			});
 		
-			if(type === 'POST' || type === 'PUT')
+			if(type === 'POST' || type === 'PUT') {
+				xhr.setRequestHeader("Content-type", "application/json");
 				xhr.send(data);	
+			}
 			else if(type === 'GET' || type === 'DELETE')	
 				xhr.send(null);
 		});

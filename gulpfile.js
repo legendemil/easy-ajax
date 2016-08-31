@@ -10,6 +10,9 @@ var gulp = require('gulp'),
 gulp.task('compress', function (cb) {
   pump([
         gulp.src('src/*.js'),
+        babel({
+            presets: ['es2015']
+        }), 
         uglify(),
         gulp.dest('dist')
     ],
