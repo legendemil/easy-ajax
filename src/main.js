@@ -10,14 +10,11 @@ let EasyAjax = (function() {
 				let xhr = new XMLHttpRequest();
 				xhr.open('GET', this.baseUrl + query, true);
 				xhr.addEventListener('load', function(ev) {
-					let response = JSON.parse(ev.target.response);
+					let response = parseResponse(ev.target.response);
 					resolve(response);
 				});
 					xhr.addEventListener('error', function (ev) {
-						let error = new Error();
-						error.name = 'UrlError';
-						error.message = 'Incorrect URL';
-						error.data = ev.target;
+						let error = makeError(ev.target);
 						reject(error);
 					});
 					xhr.send();		
@@ -29,14 +26,11 @@ let EasyAjax = (function() {
 				let xhr = this.xhr;
 				xhr.open('POST', this.baseUrl + query, true);
 				xhr.addEventListener('load', function(ev) {
-					let response = JSON.parse(ev.target.response);
+					let response = parseResponse(ev.target.response);
 					resolve(response);
 				});
 				xhr.addEventListener('error', function (ev) {
-					let error = new Error();
-					error.name = 'UrlError';
-					error.message = 'Incorrect URL';
-					error.data = ev.target;
+					let error = makeError(ev.target);
 					reject(error);
 				});
 				xhr.send(data);		
@@ -46,6 +40,18 @@ let EasyAjax = (function() {
 		setBaseUrl(baseUrl) {
 			this.baseUrl = baseUrl;
 		}
+	}
+
+	parseResponse(response) {
+		return JSON.parse(response);
+	}
+
+	makeError(data) {
+		let error = new Error();
+		error.name = 'UrlError';
+		error.message = 'Incorrect URL';
+		error.data = data;
+		return error;
 	}
 
 	return EasyAjax;
