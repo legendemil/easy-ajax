@@ -17,6 +17,10 @@ let EasyAjax = (function() {
 			return makeRequest.call(this, 'PUT', query, data);
 		}
 
+		delete(query) {
+			return makeRequest.call(this, 'DELETE', query);
+		}
+
 		setBaseUrl(baseUrl) {
 			this.baseUrl = baseUrl;
 		}

@@ -29,6 +29,11 @@ var EasyAjax = function () {
 				return makeRequest.call(this, 'PUT', query, data);
 			}
 		}, {
+			key: 'delete',
+			value: function _delete(query) {
+				return makeRequest.call(this, 'DELETE', query);
+			}
+		}, {
 			key: 'setBaseUrl',
 			value: function setBaseUrl(baseUrl) {
 				this.baseUrl = baseUrl;
