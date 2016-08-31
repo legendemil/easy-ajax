@@ -16,59 +16,17 @@ var EasyAjax = function () {
 		_createClass(EasyAjax, [{
 			key: 'get',
 			value: function get(query) {
-				var _this = this;
-
-				return new Promise(function (resolve, reject) {
-					var xhr = _this.xhr;
-					xhr.open('GET', _this.baseUrl + query, true);
-					xhr.addEventListener('load', function (ev) {
-						var response = parseResponse(ev.target.response);
-						resolve(response);
-					});
-					xhr.addEventListener('error', function (ev) {
-						var error = makeError(ev.target);
-						reject(error);
-					});
-					xhr.send();
-				});
+				return makeRequest.call(this, 'GET', query);
 			}
 		}, {
 			key: 'post',
 			value: function post(query, data) {
-				var _this2 = this;
-
-				return new Promise(function (resolve, reject) {
-					var xhr = _this2.xhr;
-					xhr.open('POST', _this2.baseUrl + query, true);
-					xhr.addEventListener('load', function (ev) {
-						var response = parseResponse(ev.target.response);
-						resolve(response);
-					});
-					xhr.addEventListener('error', function (ev) {
-						var error = makeError(ev.target);
-						reject(error);
-					});
-					xhr.send(data);
-				});
+				return makeRequest.call(this, 'POST', query, data);
 			}
 		}, {
 			key: 'put',
 			value: function put(query, data) {
-				var _this3 = this;
-
-				return new Promise(function (resolve, reject) {
-					var xhr = _this3.xhr;
-					xhr.open('PUT', _this3.baseUrl + query, true);
-					xhr.addEventListener('load', function (ev) {
-						var response = parseResponse(ev.target.response);
-						resolve(response);
-					});
-					xhr.addEventListener('error', function (ev) {
-						var error = makeError(ev.target);
-						reject(error);
-					});
-					xhr.send(data);
-				});
+				return makeRequest.call(this, 'PUT', query, data);
 			}
 		}, {
 			key: 'setBaseUrl',
@@ -79,6 +37,28 @@ var EasyAjax = function () {
 
 		return EasyAjax;
 	}();
+
+	function makeRequest(type) {
+		var _this = this;
+
+		var query = arguments.length <= 1 || arguments[1] === undefined ? '' : arguments[1];
+		var data = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+
+		return new Promise(function (resolve, reject) {
+			var xhr = _this.xhr;
+			xhr.open(type, _this.baseUrl + query, true);
+			xhr.addEventListener('load', function (ev) {
+				var response = parseResponse(ev.target.response);
+				resolve(response);
+			});
+			xhr.addEventListener('error', function (ev) {
+				var error = makeError(ev.target);
+				reject(error);
+			});
+
+			if (type === 'POST' || type === 'PUT') xhr.send(data);else if (type === 'GET' || type === 'DELETE') xhr.send(null);
+		});
+	}
 
 	function parseResponse(response) {
 		var result = undefined;

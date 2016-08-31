@@ -34,7 +34,7 @@ describe('Testing EasyAjax - PUT method.', function() {
 		});
 
 		it("Called with correct params should return strng 'OK'", function(done) {
-			let result = this.ajax.put('api/learncode/friends/57c2984c439e780100887726', {name: 'Billy Bob', age: 28});
+			let result = this.ajax.put('api/johnbob/friends/57c2984c439e780100887726', {name: 'Billy Bob', age: 28});
 			result.then(function(response) {
 				expect(response).toBe('OK');
 				done();
@@ -46,7 +46,7 @@ describe('Testing EasyAjax - PUT method.', function() {
 
 		it("Called with incorrect params should return Error Object", function(done) {
 			this.ajax.setBaseUrl('http://rest.incorrect-learncode.academy/')
-			let result = this.ajax.put('api/learncode/friends/57c2984c439e780100887726', {name: 'Billy Bob', age: 28});
+			let result = this.ajax.put('api/johnbob/friends/57c2984c439e780100887726', {name: 'Billy Bob', age: 28});
 			result.then(function(data) {
 				done();
 			})
